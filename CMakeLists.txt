@@ -113,8 +113,9 @@ if(${FRUIT_ENABLE_CLANG_TIDY})
     -warnings-as-errors=*;)
 endif()
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
+# moved into tsrget section (src)
+# include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+# include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 
 # (debug-only) compile switch to get deep template instantiation stacktraces for errors (instead
 # of the user-friendly default that hides Fruit internals).
@@ -128,14 +129,23 @@ add_subdirectory(src)
 if(NOT "${FRUIT_IS_BEING_BUILT_BY_CONAN}")
   if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     # Do not exclude these from "make all" in debug mode, they must build.
-    add_subdirectory(examples)
-    add_subdirectory(tests)
+    if (WITH_FRUIT_EXAMPLES)  
+      add_subdirectory(examples)
+    endif()
+    if (NOT WITHOUT_TESTING)
+      add_subdirectory(tests)
+    endif()
   else()
-    add_subdirectory(examples EXCLUDE_FROM_ALL)
-    add_subdirectory(tests)
+    if (WITH_FRUIT_EXAMPLES)
+      add_subdirectory(examples EXCLUDE_FROM_ALL)
+    endif()  
+    if (NOT WITHOUT_TESTING)
+      add_subdirectory(tests)
+    endif()  
   endif()
-
-  add_subdirectory(extras EXCLUDE_FROM_ALL)
+  if (WITH_FRUIT_EXTRAS)
+    add_subdirectory(extras EXCLUDE_FROM_ALL)
+  endif()
 endif()
 
 install(DIRECTORY include/fruit/

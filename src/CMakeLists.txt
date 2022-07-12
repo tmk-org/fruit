@@ -21,6 +21,11 @@ else()
     add_library(fruit STATIC ${FRUIT_SOURCES})
 endif()
 
+target_include_directories(fruit 
+PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../include
+       ${CMAKE_CURRENT_BINARY_DIR}/../include
+)
+
 install(TARGETS fruit
         RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
         ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
