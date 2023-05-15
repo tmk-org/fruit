@@ -20,7 +20,7 @@ if("${BUILD_SHARED_LIBS}")
 else()
     add_library(fruit STATIC ${FRUIT_SOURCES})
 endif()
-
+set_target_properties(fruit PROPERTIES POSITION_INDEPENDENT_CODE ON)
 target_include_directories(fruit 
 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../include
        ${CMAKE_CURRENT_BINARY_DIR}/../include
